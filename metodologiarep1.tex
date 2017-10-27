@@ -1,0 +1,316 @@
+\documentclass[12pt]{article}
+\usepackage{wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{subfigure} 
+\usepackage{amsmath, amssymb}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{multirow, array}
+\usepackage{vmargin}
+
+\setmargins
+{3cm}       % margen izquierdo
+{1.5cm}       % margen superior
+{15.5cm}      % anchura del texto
+{23.42cm}     % altura del texto
+{10pt}        % altura de los encabezados
+{1cm}         % espacio entre el texto y los encabezados
+{0pt}         % altura del pie de página
+{2cm}         % espacio entre el texto y el pie de página
+
+\graphicspath{{img/}}
+\renewcommand{\figurename}{Figura}
+
+\begin{document}
+		\begin{titlepage}
+		\begin{center}
+			\vspace*{0in}
+			\begin{figure}[htb]
+				\begin{center}
+					\includegraphics[width=8cm]{3}
+				\end{center}
+			\end{figure}
+			\rule{100mm}{0.1mm}\\
+			\begin{Large}
+				Instituto Tecnológico de Morelia\\
+				"José María Morelos y Pavón"\\
+			\end{Large}
+			\vspace*{0.15in}
+			\begin{Large}
+				Departamento de Ingeniería Electrónica.\\
+			\end{Large}
+			\vspace*{0.4in}
+			
+			\begin{Large}
+				\textbf{PRACTICA NO. 1: Análisis de un sistema de primer orden} \\
+			\end{Large}
+			\vspace*{0.3in}
+			\begin{Large}
+				Joani Alonso Hurtado Barrera. 14121123\\
+				Daniel Alejandro Marin Magaña. 14121127\\
+			\end{Large}
+			\vspace*{0.1in}
+			\begin{Large}
+				Contro I\\
+				7 Semestre\\
+				Grupo A\\
+				\rule{80mm}{0.1mm}\\
+				Fecha de Entrega: 27/10/2017\\
+			\end{Large}
+			\vspace*{0.1in}
+		\end{center}		
+	\end{titlepage}
+
+\section{Introducción}
+El objetivo de esta práctica es el de representar un modelo de un sistema mecánico e hidráulico de primer orden con un sistema eléctrico para facilitar su interpretación y de esta manera obtener su ecuación de transferencia a la vez que se determina su respuesta en el tiempo con la transformada de Laplace.\\
+Para esta sesión se toma como ejemplo un sistema de llenado de agua en un tanque, donde la entrada es representada como $W_i(t)$, la salida es $W_o(t)$, R es la resistencia que existe a la salida, C es la capacidad del tanque y $p(t)$ la altura del agua.\\
+De este sistema se obtendrá su equivalente a un circuito eléctrico y sus respectivas ecuaciones para determinar su respuesta.\\
+Usando el software scilab se graficará la respuesta de este sistema con un código generado usando funciones básicas y se hará la comparación con lo obtenido usando la función ya establecida por scilab.\\
+Seguido de esto se variará tanto la entrada como la salida, es decir, se obtendrá la respuesta cuando la salida sea mayor a la entrada, cuando sean ambos iguales y cuando la salida sea menor a la entrada.\\
+
+	\section{Metodologia}
+	En base a la figura 1
+	\\ 
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=8cm]{1}
+			\caption{Sistema hidraulico}\label{figura 1}
+    	\end{figure}
+    \\
+    podemos obtener nuestra ecuación de balance de energías, que está dado por:
+	\[\sum F_{in} + \sum F_{gen}=\sum F_{out} + \sum F_{ac} \]
+	y ya que no tenemos fuerzas generadas por lo tanto:
+	\[\sum F_{gen}=0\]
+	una vez definido esto podemos definir de nuestro sistema que:
+	\[W_{in}(t)=W_{out}(t)+C\frac{dh(t)}{dt}\]
+	y podemos decir que:
+	\[W_{out}(t)=\frac{g}{R_e}h(t)\]
+	Para una mejor comprensión podemos hacer la analogía con un circuito eléctrico fuerza corriente como el de la figura 2.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=8cm]{2}
+		\caption{Circuito eléctrico}\label{figura 2}
+	\end{figure}
+	
+	haciendo el análisis de corrientes encontramos que:
+	\[\frac{g}{R_e}=R\]
+	\[W_{in}=\frac{h(t)}{R}+C\frac{dh(t)}{dt}\]
+	y haciendo la transformada inversa de Laplace obtenemos:
+	\[\mathcal{L}^{-1}=\{ W_{in}=\frac{h(t)}{R}+C\frac{dh(t)}{dt} \} \]
+	\[W_{in}(S)=\frac{h(S)}{R}+SCh(S)+h(0)\]
+	\[W_{in}(S)={\frac{h(S)+RCSh(S)}{R}}\]
+	\[W_{in}(S)=\frac{h(S)(1+RCS)}{R}\]
+	\[\frac{W_{in}(S)}{h(S)}=\frac{1+RCS}{R}\]
+	\[\frac{h(S)}{W_{in}(S)}=\frac{R}{1+RCS}\]
+	obteniendo así nuestra función de transferencia:
+	\[h(S)=\frac{1}{S}(\frac{R}{1+RCS})\]
+	Y teniendo la respuesta escalonada de sistema de primer orden
+	\[Y(S)=\frac{1}{S}(\frac{bS+c}{S+a})\]
+	entonces para obtener una ecuación de respuesta en escalón genérica tenemos:
+	\[Y(S))=\frac{1}{S}(\frac{bS+c}{S+a})\]
+	\[Y(S)=\frac{A}{S}+\frac{B}{S+a}\]
+	\[bS+c=Aa+AS+BS\]
+	\[A+B=b\]
+	\[A=\frac{c}{a}\]
+	\[B=b-\frac{c}{a}\]
+	\[Y(S)=\frac{c/a}{S}+\frac{{(b-c/a)}}{a+S}\]
+	y haciendo la transformada inversa de Laplace:
+	\[\mathcal{L}^{-1}=\{\frac{c/a}{S}+\frac{{(b-c/a)}}{a+S}\}=\frac{c}{a}+(b-\frac{c}{d})exp^{-at}\]
+	
+	\section{Resultados}
+	Una vez obtenidas las ecuaciones del sistema y la general representadas en el tiempo se procede a comparar ambas respuestas con el software scilab.\\
+	Para esto se hace un análisis de comparación, la ecuación $\frac{bs+c}{s+a}$ debe parecerse a la del sistema $\frac{Re}{1+R_e C_e s}$ donde a $R_e$ se le conocerá como K y $R_e C_e$ como tau.\\ 
+	Si se desea igualarlas entonces b debe valer 0 pues en la ecuación del sistema no existe el término s en el divisor dejando sólo a C que representará a K, a vale 1 y tau también, de esta forma ya se parecen ambas ecuaciones.\\
+	Primero se grafica la respuesta con la función ya implementada en scilab, obteniendo la siguiente imagen: \\
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=8cm]{4}
+		\caption{Respuesta de la función de scilab}\label{figura 3}
+	\end{figure}
+	
+	El código de dicha función se muestra en seguida:
+	
+	\begin{lstlisting}[frame=single]
+	//Defining a first order system
+	s = %s //The quicker alternative to usings=
+	poly(0,'s')
+	//Gain and time constant
+	K = 1;
+	tau =1;
+	simpleSys = syslin ('c',K/(1+tau*s))
+	t = 0:0.01:15;
+	y = csim('step',t,simpleSys)
+	plot(t,y)
+	\end{lstlisting}
+	
+	La siguiente figura muestra la gráfica obtenida con la función hecha con comandos básicos:\\
+	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=8cm]{5}
+		\caption{Respuesta de la función con comandos básicos}\label{figura 4}
+	\end{figure}
+
+y el código para realizarla es el siguiente:
+\begin{lstlisting}[frame=single]
+a = input("Valor de a ")
+b = input("Valor de b ")
+c = input("Valor de c ")
+t = 0:0.01:15;
+y = (c/a)+((b*a-c)/a)*exp(-a*t)
+plot(t,y)
+\end{lstlisting}
+
+Estos son los valores que se le dio a las variables a, b y c.\\
+Valor de a \\
+1\\
+Valor de b\\ 
+0\\
+Valor de c\\ 
+1.\\
+
+Por último se hace un análisis en tres diferentes casos, primer caso, cuando la entrada es más rápida, o es mayor, a la salida, cuando ambos son iguales y cuando la entrada es menor a la salida.
+Para el caso en que son iguales, el flujo es constante, por lo que la gráfica obtenida es la siguiente:\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=8cm]{6}
+	\caption{Entrada igual a la salida}\label{figura 5}
+\end{figure}
+	
+	Estos son los valores que se le dio a las variables a, b y c.\\
+	Valor de a \\
+	1\\
+	Valor de b\\ 
+	1\\
+	Valor de c\\ 
+	1.\\
+
+Haciendo el análisis en el que la entrada es mayor a la salida se deduce que al ser más lento el flujo de salida el tanque se llenará, en un tanque ideal se llenaría hasta el infinito, pero en uno real el contenido se derramaría, teniendo así un límite, como se muestra en la siguiente figura:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=8cm]{7}
+	\caption{Entrada mayor a la salida}\label{figura 6}
+\end{figure}
+
+Estos son los valores que se le dio a las variables a, b y c.\\
+Valor de a \\
+1\\
+Valor de b\\ 
+0\\
+Valor de c\\ 
+10.\\
+
+Por último si la salida es mayor a la entrada significa que el tanque se vaciará más rápido, llegando casi a 0.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=8cm]{8}
+	\caption{Entrada menor a la salida}\label{figura 7}
+\end{figure}
+
+Estos son los valores que se le dio a las variables a, b y c.\\
+Valor de a \\
+5\\
+Valor de b\\ 
+1\\
+Valor de c\\ 
+1.\\
+
+Basándose en el circuito eléctrico, representar la entrada igual a la salida significaría que no existe el capacitor, ya que la salida es la corriente que pasa por la resistencia.\\
+Si la entrada es mayor a la salida entonces la resistencia es muy granda y en el caso inverso el capacitor es muy grande.\\
+Haciendo el análisis de las ecuaciones de salida del circuito para cuando la entrada es mayor a la salida se obtiene una ecucaión general para estos casos especiales.\\
+\begin{equation*}
+W_i = W_o + W_c
+\end{equation*}
+si $W_i$ es mayor a $W_o$ entonces $R_e$ es muy grande, tal que $R_e = 10000R_e$
+\begin{equation*}
+W_i = \frac{h(t)}{R_e} + C\frac{dh(t)}{dt}
+\end{equation*}
+\begin{equation*}
+W_i = 0.0001W_o + C\frac{dh(t)}{dt}
+\end{equation*}
+Aplicado transformada de Laplace.\\
+\begin{equation*}
+W_i (s) = 0.0001W_o (s) + C_e s h(s)\frac{R_e}{R_e}
+\end{equation*}
+\begin{equation*}
+W_i (s) = 0.0001W_o(s) + W_o (s) C_e s R_e
+\end{equation*}
+Se despeja $W_o$, para la ecuación de salida se debe dividir la salida entre la entrada, por lo tanto\\
+\begin{equation*}
+\frac{W_i (s)}{W_o (s)} = 0.0001 + C_e s R_e
+\end{equation*}
+Se obtiene el inverso para que la salida se divida entre la entrada.\\
+\begin{equation*}
+\frac{W_o (s)}{W_i(s)} = \frac{1}{0.0001 + C_e s R_e}
+\end{equation*}
+Dejando a la s sin argumento que le multplique se obtiene:
+\begin{equation*}
+\frac{W_o (s)}{W_i (s)} = \frac{\frac{1}{R_e C_e}}{\frac{0.0001}{R_e C_e} + s}
+\end{equation*}
+Donde $\frac{1}{R_e C_e}$ es igual a $b-\frac{c}{a}$ y $\frac{0.0001}{R_e C_e}$ es igual a a.\\
+ Si se hiciera un análisis matemático para cuando la salida es menor a la entrada sería como lo siguiente:\\
+
+\begin{equation*}
+W_i = W_o + W_c
+\end{equation*}
+si $W_i$ es mayor a $W_o$ entonces $C_e$ es muy grande, tal que $C_e = 10000C_e$
+\begin{equation*}
+W_i = \frac{h(t)}{R_e} + C\frac{dh(t)}{dt}
+\end{equation*}
+\begin{equation*}
+W_i = W_o + 10000C\frac{dh(t)}{dt}
+\end{equation*}
+Aplicado transformada de Laplace.\\
+\begin{equation*}
+W_in(s) = 1W_o (s) + 10000C_e s h(s)\frac{R_e}{R_e}
+\end{equation*}
+\begin{equation*}
+W_in (s) = W_o(s) + 10000W_o (s) C_e s R_e
+\end{equation*}
+Se despeja $W_o$, para la ecuación de salida se debe dividir la salida entre la entrada, por lo tanto\\
+\begin{equation*}
+\frac{W_i (s)}{W_o (s)} = 1 + 10000C_e s R_e
+\end{equation*}
+Se obtiene el inverso para que la salida se divida entre la entrada.\\
+\begin{equation*}
+\frac{W_o (s)}{W_i (s)} = \frac{1}{1 + 10000C_e s R_e}
+\end{equation*}
+Dejando a la s sin argumento que le multplique se obtiene:
+\begin{equation*}
+\frac{W_o (s)}{W_i (s)} = \frac{\frac{1}{10000R_e C_e}}{\frac{1}{10000R_e C_e} + s}
+\end{equation*}
+Donde $\frac{1}{10000R_e C_e}$ es igual a $b-\frac{c}{a}$ y $\frac{1}{10000R_e C_e}$ es igual a a.\\
+
+Cuando ambos son iguales es más fácil de analizar.
+
+\begin{equation*}
+W_i = W_o + W_c
+\end{equation*}
+si $W_i$ es igual a $W_o$
+\begin{equation*}
+W_i = W_i + C\frac{dh(t)}{dt}
+\end{equation*}
+\begin{equation*}
+0 = C\frac{dh(t)}{dt}
+\end{equation*}
+Por lo tanto no existe capacitor o tanque.\\
+\\
+
+	\section{Conclusiones}
+	\subsection{Joani Alonso Hurtado Batrrera}
+	En esta práctica aprendimos a analizar un sistema de primer orden y ver su comportamiento gráficamente de acuerdo a su función de transferencia, quedando más claro lo que es esta función y lo importante que es saber analizarla y comprender la respuesta del sistema, al principio fue un poco difícil pero al hacer la analogía con un sistema eléctrico ( un circuito eléctrico) que es a lo que estamos más a costribados a ver y por ello se nos es más fácil comprenderlo y así poder resolver y obtener nuestras funciones requeridas para poder implementar un código y así observar cómo es que se porta el sistema hidráulico para los tres casos analizados (la entrada igual a la salida, la salida menor a la entrada y la salida mayor a la entrada) , que de igual forma fu un poco confuso al principio pero finalmente se obtuvo lo que se quería.
+	
+	\subsection{Daniel Alejandro Marín Magaña}
+	Durante la realización de esta práctica de analizó un sistema mecánico-Hidráulico, representado por el llenado de un tanque con agua, relacionándolo con un circuito eléctrico equivalente en donde se observó que la capacidad del tanque actúa como capacitor y en la salida existe una resistencia que es el área del tubo por donde sale el agua. Con estas representaciones se obtuvo la ecuación de transferencia del sistema y se comparó con el análisis de una ecuación general de transferencia y los valores de variables se ajustaron para hacer que ambas ecuaciones fueran lo más parecidas posible. Aunque al principio fue complicado realizar estas interpretaciones, mientras más se analizaba más fácil fue de comprender ya que en la última parte de la actividad fue analizar tres casos diferentes, cuando entrada y salida son iguales, cuano la entrada es mayor a la salida y viceversa. Fue complicado determinar que era b,a y c en la ecuación general reflejadas en la ecuación del sistema. Al final aplicando ecuaciones diferenciales se obtuvo esta representación y su comprensión fue más sencilla.
+	
+	
+	
+\end{document}
